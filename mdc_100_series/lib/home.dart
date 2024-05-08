@@ -27,39 +27,48 @@ class HomePage extends StatelessWidget {
       return const <Card>[];
     }
     var themeData = Theme.of(context);
-    var numberFormat = NumberFormat.simpleCurrency(locale: Localizations.localeOf(context).toString());
-    return products.map((product) => Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        AspectRatio(
-            aspectRatio: 18 / 11,
-            child: Image.asset(product.assetName,
-                package: product.assetPackage,fit: BoxFit.fitWidth,)
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(product.name,style: themeData.textTheme.titleLarge,maxLines: 1,),
-                  const SizedBox(height: 8.0),
-                  Text(numberFormat.format(product.price),style: themeData.textTheme.titleSmall),
-                ]),
-          ),
-        )
-      ]),
-    )
-    ).toList();
-    List<Card> cards = List.generate(products.length, (int index) {
-
-    });
-    return cards;
+    var numberFormat = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
+    return products
+        .map((product) => Card(
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AspectRatio(
+                        aspectRatio: 18 / 11,
+                        child: Image.asset(
+                          product.assetName,
+                          package: product.assetPackage,
+                          fit: BoxFit.fitWidth,
+                        )),
+                    Expanded(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                product.name,
+                                style: themeData.textTheme.titleLarge,
+                                maxLines: 1,
+                              ),
+                              const SizedBox(height: 8.0),
+                              Text(numberFormat.format(product.price),
+                                  style: themeData.textTheme.titleSmall),
+                            ]),
+                      ),
+                    )
+                  ]),
+            ))
+        .toList();
   }
 
   // TODO: Add a variable for Category (104)
   @override
   Widget build(BuildContext context) {
+    List<Card> products = _buildGridCards(context);
     // TODO: Return an AsymmetricView (104)
     // TODO: Pass Category variable to AsymmetricView (104)
     return Scaffold(
@@ -85,11 +94,14 @@ class HomePage extends StatelessWidget {
       ),
       // TODO: Add app bar (102)
       // TODO: Add a grid view (102)
-      body: GridView.count(
-        crossAxisCount: 2,
+      body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
-        children: _buildGridCards(context),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, childAspectRatio: 8.0 / 9.0),
+        itemBuilder: (BuildContext context, int index) {
+          return products[index];
+        },
+        itemCount: products.length,
       ),
       resizeToAvoidBottomInset: false,
     );

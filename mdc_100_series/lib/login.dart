@@ -23,6 +23,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // TODO: Add text editing controllers (101)
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +41,32 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             const SizedBox(height: 120.0),
+            TextField(
+              controller: _usernameController,
+              decoration:
+                  const InputDecoration(labelText: "User Name", filled: true),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _passwordController,
+              decoration:
+                  const InputDecoration(labelText: 'Password', filled: true),
+              obscureText: true,
+            ),
+            const SizedBox(height: 16.0),
+            OverflowBar(
+              alignment: MainAxisAlignment.end,
+              children: [
+                TextButton(onPressed: () {
+                  _usernameController.clear();
+                  _passwordController.clear();
+                }, child: const Text('Cancel')),
+                const SizedBox(width: 16.0),
+                ElevatedButton(onPressed: () {
+                  Navigator.pop(context);
+                }, child: const Text('Next')),
+              ],
+            ),
             // TODO: Remove filled: true values (103)
             // TODO: Add TextField widgets (101)
             // TODO: Add button bar (101)
